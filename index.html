@@ -2,377 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Credit Card Validator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Down</title>
     <style>
-        :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #50c878;
-            --background-dark: #121212;
-            --card-background: #1e1e1e;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-dark);
-            color: #ffffff;
-            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            overflow: hidden;
-            perspective: 1000px;
-        }
-
-        /* Cosmic Background */
-        .cosmic-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            overflow: hidden;
-        }
-
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: rotate(45deg);
-        }
-
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.2; }
-            100% { opacity: 1; }
-        }
-
-        /* Alert Banner */
-        .alert-banner {
-            background-color: #f39c12;
-            color: #fff;
-            padding: 10px 20px;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
             text-align: center;
-            font-weight: bold;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 10;
         }
-
-        .alert-banner span {
-            cursor: pointer;
-            font-weight: normal;
-            padding-left: 20px;
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .alert-banner span:hover {
-            text-decoration: underline;
-        }
-
-        .validator-container {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            width: 500px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            transform: rotateX(10deg) rotateY(-10deg);
-            transition: all 0.5s ease;
-            margin-top: 60px; /* Adjusted to avoid overlap with alert */
-        }
-
-        .validator-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                transparent,
-                transparent,
-                transparent,
-                var(--primary-color)
-            );
-            animation: rotate 4s linear infinite;
-        }
-
-        .validator-container::after {
-            content: '';
-            position: absolute;
-            inset: 4px;
-            background: var(--background-dark);
-            border-radius: 16px;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .content {
-            position: relative;
-            z-index: 10;
-        }
-
-        .card-input-wrapper {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        #cardNumber {
-            width: 100%;
-            padding: 15px 20px;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 18px;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
-
-        #cardNumber:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
-        }
-
-        .card-type-icons {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            gap: 10px;
-        }
-
-        .card-type-icon {
-            color: rgba(255,255,255,0.3);
+        h1 {
             font-size: 24px;
-            transition: color 0.3s ease;
+            margin-bottom: 10px;
         }
-
-        .card-type-icon.active {
-            color: var(--primary-color);
-        }
-
-        .validate-btn, .clear-btn, .theme-toggle {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary-color), #2c3e50);
-            color: white;
-            border: none;
-            border-radius: 10px;
+        p {
             font-size: 18px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .validate-btn:hover, .clear-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
-        }
-
-        .clear-btn {
-            background: #e74c3c;
-        }
-
-        #result {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #result.valid {
-            background-color: rgba(46, 204, 113, 0.1);
-            color: var(--secondary-color);
-        }
-
-        #result.invalid {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-        }
-
-        .theme-toggle {
-            background: #f39c12;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .validator-container {
-                width: 95%;
-                margin: 10px;
-                padding: 30px 20px;
-            }
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="alert-banner">
-        🚨 <strong>More updates coming soon!</strong> Stay tuned for new features and improvements. <span onclick="closeAlert()">[✖]</span>
+    <div class="container">
+        <h1>Site is down</h1>
+        <p>We’ll be back up soon. Thank you for your patience!</p>
     </div>
-
-    <div class="cosmic-bg">
-        <div class="stars" id="starContainer"></div>
-    </div>
-    <div class="validator-container">
-        <div class="content">
-            <h1 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">
-                <i class="fas fa-credit-card"></i> Card Validator
-            </h1>
-            <div class="card-input-wrapper">
-                <input 
-                    type="text" 
-                    id="cardNumber" 
-                    placeholder="Enter credit card number"
-                    maxlength="19"
-                >
-                <div class="card-type-icons">
-                    <i class="fab fa-cc-visa card-type-icon" data-type="visa"></i>
-                    <i class="fab fa-cc-mastercard card-type-icon" data-type="mastercard"></i>
-                    <i class="fab fa-cc-amex card-type-icon" data-type="amex"></i>
-                    <i class="fab fa-cc-discover card-type-icon" data-type="discover"></i>
-                </div>
-            </div>
-            <button class="validate-btn" onclick="validateCard()">
-                Validate Card
-            </button>
-            <button class="clear-btn" onclick="clearInput()">Clear</button>
-            <div id="result"></div>
-        </div>
-    </div>
-
-    <script>
-        // Close Alert
-        function closeAlert() {
-            document.querySelector('.alert-banner').style.display = 'none';
-        }
-
-        // Star Background Generation
-        function createStars() {
-            const starContainer = document.getElementById('starContainer');
-            const starCount = 200;
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                star.style.width = `${Math.random() * 2}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${Math.random() * 2 + 2}s`;
-                
-                starContainer.appendChild(star);
-            }
-        }
-
-        createStars();
-
-        // Credit Card Validation
-        function validateCard() {
-            const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
-            const resultDiv = document.getElementById('result');
-
-            if (cardNumber.length === 0) {
-                resultDiv.classList.remove('valid', 'invalid');
-                resultDiv.innerText = '';
-                return;
-            }
-
-            let sum = 0;
-            let isEven = false;
-            for (let i = cardNumber.length - 1; i >= 0; i--) {
-                let digit = parseInt(cardNumber.charAt(i));
-
-                if (isEven) {
-                    digit *= 2;
-                    if (digit > 9) {
-                        digit -= 9;
-                    }
-                }
-
-                sum += digit;
-                isEven = !isEven;
-            }
-
-            if (sum % 10 !== 0) {
-                resultDiv.classList.add('invalid');
-                resultDiv.innerText = 'Invalid: Card number is not valid';
-                return;
-            }
-
-            // Card Type Detection
-            const cardType = detectCardType(cardNumber);
-            if (cardType) {
-                resultDiv.classList.add('valid');
-                resultDiv.innerText = `Valid ${cardType} Card: ${maskCardNumber(cardNumber)}`;
-                showCardTypeIcon(cardType);
-            } else {
-                resultDiv.classList.add('invalid');
-                resultDiv.innerText = 'Invalid: Unrecognized card type';
-            }
-        }
-
-        function detectCardType(cardNumber) {
-            if (/^4/.test(cardNumber)) return 'Visa';
-            if (/^5[1-5]/.test(cardNumber)) return 'MasterCard';
-            if (/^3[47]/.test(cardNumber)) return 'American Express';
-            if (/^6/.test(cardNumber)) return 'Discover';
-            return null;
-        }
-
-        function maskCardNumber(number) {
-            return number.slice(0, -4).replace(/\d/g, '*') + number.slice(-4);
-        }
-
-        function showCardTypeIcon(cardType) {
-            const cardTypeIcons = document.querySelectorAll('.card-type-icon');
-            cardTypeIcons.forEach(icon => {
-                if (icon.getAttribute('data-type') === cardType.toLowerCase()) {
-                    icon.classList.add('active');
-                }
-            });
-        }
-
-        function clearInput() {
-            document.getElementById('cardNumber').value = '';
-            document.getElementById('result').innerHTML = '';
-            document.querySelectorAll('.card-type-icon').forEach(icon => icon.classList.remove('active'));
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-        }
-    </script>
 </body>
 </html>
